@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>PVM Assignment</title>
+    <%= stylesheets('pvm') %>
+    <%= scripts('jquery', 'jquery-ui', 'underscore', 'ace/ace', 'source-editor', 'revealer') %>
+
+    
+    <%= Html::Generation::Quiz.setup %>
+    <style>
+      #colours {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+      }
+
+      #colours td:first-child {
+        color: #FFF;
+        text-align: center;
+      }
+
+      #colours td {
+        padding: 5px;
+      }
+
+      input {
+        width: 100px;
+      }
+
+      input.correct {
+        background: #AFA;
+      }
+
+      input.incorrect {
+        background: #FAA
+      }
+
+      .solution {
+        border: 1px solid black;
+        padding: 10px;
+        width: 25%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .message {
+        font-size: 2em;
+        font-weight: bold;
+        text-align: center;
+        width: 75%;
+        margin: 100px auto;
+        padding: 20px;
+        background: #F44;
+        box-shadow: 0px 0px 50px 30px #F44;
+      }
+
+      .git {
+        border: 1px solid black;
+        padding: 10px;
+        width: 80%;
+        margin: 10px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .cake {
+        border: 1px solid black;
+        padding: 10px;
+        width: 80%;
+        margin: 10px auto;
+        font-weight: bold;
+        background: #FFAA77;
+      }
+
+      .cake .header {
+        display: block;
+        text-align: center;
+        font-size: 2em;
+        font-weight: bold;
+      }
+
+      .revealer {
+        border: 1px solid black;
+        padding: 10px;
+        width: 25%;
+        margin: 10px auto;      
+        text-align: center;
+        cursor: help;
+      }
+
+      .explanation {
+        border: 1px solid black;
+        padding: 10px;
+        width: 75%;
+        margin: 10px auto;
+      }
+
+      img.center {
+        display: block;
+        margin: 10px auto;
+        width: 90%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="center-vertically">Image Manipulation</div>
+    </header>
+    <div id="contents">
+      <div class="message" title="You better be reading this!">
+	As always, update your git repo.
+      </div>
+
+      <p>
+        All exercises are to be made within the same solution, which
+        can be found here:
+      </p>
+      <%=
+         module GitLink
+           extend Contracts::TypeChecking
+           extend GitMixin
+         end
+
+         GitLink.git_link 'image-manipulation/image-manipulation.sln'
+      %>
+      <p>
+        The goal of this assignment is for you to write image filters that transform this image
+      </p>
+      <img class="center" src="sample.bmp" />
+      <p>
+	into the versions shown below.
+      </p>
+      <p>
+	To facilitate debugging, you save the above image to your disk and
+	hardcode its absolute path into your code.
+      </p>
+	
+      <p>
+	The code for the filter producing the image below has already
+	been written for you. Use it as inspiration for all exercises.
+      </p>
+      <img class="center" src="red.jpg" />
+      <%=
+	exercise do
+          <<-END
+	  <p>Create a filter producing the results below. You can put it in the same files as <code>RedFilter</code>.</p>
+          <img class="center" src="green.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>Create a filter producing the results below. You can put it in the same files as <code>RedFilter</code>.</p>
+          <img class="center" src="blue.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="grayscale.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="invert.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="hflip.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="vflip.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Different parameters must be possible.
+          </p>
+          <p>
+            Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="blur5.jpg" />
+          <img class="center" src="blur10.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Create a filter producing the results below. Put the code for this filter in its own .h and .cpp files.
+          </p>
+          <img class="center" src="mosaic20.jpg" />
+          <img class="center" src="mosaic30.jpg" />
+	  END
+	end
+      %>
+
+      <%=
+	exercise do
+          <<-END
+	  <p>
+            Some of the above filters work on a per-pixel basis, i.e. the output pixel at position P
+            is only dependent of the corresponding input pixel at position P.
+            These filters share a lot of common code: they each create
+            a new bitmap and loop over all pixels one by one.
+          </p>
+          <p>
+            Put this common logic into a separate class and let the per-pixel filters be its subclasses.
+          </p>
+	  END
+	end
+      %>
+
+      <%=
+        exercise do
+           extend SourceCodeMixin
+
+           self.source = <<-END
+             # Blurs with strength 5
+             image-manipulation sample.bmp blurred.bmp blur 5
+
+             # Inverts and applies red filter
+             image-manipulation sample.bmp redinvert.bmp invert red
+
+             # Flips horizontally and vertically
+             image-manipulation sample.bmp redinvert.bmp hflip vflip
+           END
+         
+          <<-END
+	  <p>
+            The <code>main</code> function can receive two arguments, generally named <code>argn</code>
+            and <code>argv</code>. These are C++'s equivalent to the Java-<code>main</code> method <code>String[] args</code> parameters.
+            Use these parameters to allow people to use your image manipulator from command line.
+          </p>
+          <ul>
+            <li>
+              The first argument is the name of the bitmap to be transformed.
+            </li>
+            <li>
+              The second argument is the filename of the output.
+            </li>
+            <li>
+              The following arguments denote the filters that need to be applied in succession.
+            </li>
+          </ul>
+          #{show_source_editor}
+	  END
+	end
+      %>
+    </div>
+  </body>
+
+  <script>
+    Quiz.formatQuizzes();
+    SourceEditor.initialize();
+    Revealer.initialize();
+  </script>
+</html>
